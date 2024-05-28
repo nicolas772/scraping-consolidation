@@ -1,9 +1,19 @@
+import logging
 from flask import Flask, request
 from flask_cors import CORS
 import boto3
 
 app = Flask(__name__)
-CORS(app)  # Esto habilita CORS en todas las rutas
+CORS(app)  # Habilita CORS en todas las rutas
+
+# Configurar el logging
+logging.basicConfig(level=logging.INFO)
+
+@app.before_request
+def log_request_info():
+    logging.info(f'Received request: {request.method} {request.path}')
+    logging.info(f'Headers: {request.headers}')
+    logging.info(f'Body: {request.get_data()}')
 
 # Configurar el cliente SQS
 sqs_client = boto3.client('sqs', region_name='us-east-1')  # Especifica tu región
@@ -15,10 +25,6 @@ def send_message():
     bucket_name = request.json.get('bucket_name')
     root_file = request.json.get('root_file')
     num_files = request.json.get('num_files')
-
-    print("bucket: ", bucket_name)
-    print("root: ", root_file)
-    print("num_files: ", num_files)
 
     # Mensaje que deseas enviar
     message_body = 'New Excel File'
@@ -47,10 +53,10 @@ def send_message():
     )
 
     # Imprimir el ID del mensaje y el MD5 del cuerpo del mensaje
-    print(f'Message ID: {response["MessageId"]}')
-    print(f'MD5 of Message Body: {response["MD5OfMessageBody"]}')
+    logging.info(f'Message ID: {response["MessageId"]}')
+    logging.info(f'MD5 of Message Body: {response["MD5OfMessageBody"]}')
 
     return {'message': 'Mensaje enviado correctamente a la cola SQS'}, 200
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)  # Habilitar modo debug
