@@ -16,6 +16,10 @@ def send_message():
     root_file = request.json.get('root_file')
     num_files = request.json.get('num_files')
 
+    print("bucket: ", bucket_name)
+    print("root: ", root_file)
+    print("num_files: ", num_files)
+
     # Mensaje que deseas enviar
     message_body = 'New Excel File'
 
@@ -49,4 +53,4 @@ def send_message():
     return {'message': 'Mensaje enviado correctamente a la cola SQS'}, 200
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
