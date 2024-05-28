@@ -7,17 +7,21 @@ sqs_client = boto3.client('sqs', region_name='us-east-1')  # Especifica tu regi√
 queue_url = 'https://sqs.us-east-1.amazonaws.com/533267246902/EC2-to-Lambda'
 
 # Mensaje que deseas enviar
-message_body = 'Este es el cuerpo de tu mensaje'
+message_body = 'New Excel File'
 
 # Opcional: puedes a√±adir atributos al mensaje
 message_attributes = {
-    'Attribute1': {
-        'StringValue': 'Valor de atributo 1',
+    'bucket-name': {
+        'StringValue': 'bank-consolidation-2',
         'DataType': 'String'
     },
-    'Attribute2': {
-        'StringValue': 'Valor de atributo 2',
+    'root-file': {
+        'StringValue': 'cartola_parte_',
         'DataType': 'String'
+    },
+    'num-files': {
+        'StringValue': 1,
+        'DataType': 'Number'
     }
 }
 
