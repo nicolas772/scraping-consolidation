@@ -1,4 +1,4 @@
-from selenium import webdriver
+from selenium import webdriver # type: ignore
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless')
 
