@@ -1,7 +1,9 @@
 from flask import Flask, request
+from flask_cors import CORS
 import boto3
 
 app = Flask(__name__)
+CORS(app)  # Esto habilita CORS en todas las rutas
 
 # Configurar el cliente SQS
 sqs_client = boto3.client('sqs', region_name='us-east-1')  # Especifica tu región
@@ -10,9 +12,9 @@ queue_url = 'https://sqs.us-east-1.amazonaws.com/533267246902/EC2-to-Lambda'
 @app.route('/send_message', methods=['POST'])
 def send_message():
     # Obtener datos de la solicitud HTTP
-    bucket_name = request.form.get('bucket_name')
-    root_file = request.form.get('root_file')
-    num_files = request.form.get('num_files')
+    bucket_name = request.json.get('bucket_name')
+    root_file = request.json.get('root_file')
+    num_files = request.json.get('num_files')
 
     # Mensaje que deseas enviar
     message_body = 'New Excel File'
@@ -44,7 +46,7 @@ def send_message():
     print(f'Message ID: {response["MessageId"]}')
     print(f'MD5 of Message Body: {response["MD5OfMessageBody"]}')
 
-    return 'Mensaje enviado correctamente a la cola SQS'
+    return {'message': 'Mensaje enviado correctamente a la cola SQS'}, 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
