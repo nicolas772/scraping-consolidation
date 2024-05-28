@@ -20,8 +20,8 @@ message_attributes = {
         'DataType': 'String'
     },
     'num-files': {
-        'StringValue': 1,
-        'DataType': 'Number'
+        'StringValue': '1',
+        'DataType': 'String'
     }
 }
 
