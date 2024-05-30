@@ -3,8 +3,22 @@ from typing import Union
 from fastapi import FastAPI # type: ignore
 from pydantic import BaseModel
 import boto3
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "http://localhost:8080",
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Configurar el cliente SQS
 sqs_client = boto3.client('sqs', region_name='us-east-1')  # Especifica tu región
