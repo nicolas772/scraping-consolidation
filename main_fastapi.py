@@ -24,7 +24,7 @@ def send_message():
     """
     bucket_name = 'bank-consolidation-2'
     root_file = 'cartola_parte_'
-    num_files = 1 
+    num_files = '1' 
 
     # Mensaje que deseas enviar
     message_body = 'New Excel File from EC2'
