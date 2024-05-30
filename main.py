@@ -6,6 +6,7 @@ import boto3
 from fastapi.middleware.cors import CORSMiddleware
 
 class Item(BaseModel):
+    message: str
     bucketName: str
     rootFile: str
     numFiles: str
@@ -48,7 +49,7 @@ def send_message(item: Item):
     num_files = '1' 
 
     # Mensaje que deseas enviar
-    message_body = 'New Excel File from EC2'
+    message_body = item.message
 
     # Atributos del mensaje
     message_attributes = {
