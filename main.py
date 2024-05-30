@@ -5,7 +5,13 @@ from pydantic import BaseModel
 import boto3
 from fastapi.middleware.cors import CORSMiddleware
 
+class Item(BaseModel):
+    bucketName: str
+    rootFile: str
+    numFiles: str
+    
 app = FastAPI()
+
 origins = [
     "http://localhost.tiangolo.com",
     "https://localhost.tiangolo.com",
@@ -31,7 +37,7 @@ async def read_root():
     return {"Hello": "World"}
 
 @app.put("/send-message")
-def send_message():
+def send_message(item: Item):
     """
     bucket_name = request.json.get('bucket_name')
     root_file = request.json.get('root_file')
@@ -65,4 +71,4 @@ def send_message():
         MessageBody=message_body,
         MessageAttributes=message_attributes
     )
-    return {'message': 'Mensaje enviado correctamente a la cola SQS'}
+    return {'message': 'Mensaje enviado correctamente a la cola SQS', "item": item}
